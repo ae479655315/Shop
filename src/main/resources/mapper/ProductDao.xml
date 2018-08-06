@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.aishang.dao.IProductDao">
+    <!-- 查询热门商品 -->
+    <select id="findHotProducts" resultType="Product">
+        select *
+        from product
+        where is_Hot = 1
+        limit 6
+    </select>
+
+    <!-- 查询最新商品 -->
+    <select id="findNewProducts" resultType="Product">
+        select *
+        from product
+        order by pdate desc
+        limit 6
+    </select>
+
+    <!-- 查询一级类目下最新商品 -->
+    <select id="findNewProductsByCid" parameterType="int" resultType="Product">
+        select a.*
+        from product a inner join categorysecond b
+                on a.csid = b.csid
+        where cid = #{cid}
+        order by pdate desc
+        limit 3
+    </select>
+
+    <!-- 查询二级类目下最新商品 -->
+    <select id="findNewProductsByCsid" parameterType="int" resultType="Product">
+        select *
+        from product
+        where csid = #{csid}
+        order by pdate desc
+        limit 3
+    </select>
+
+
+    <!-- 根据商品id查询商品 -->
+    <resultMap id="productByPid" type="ProductWapper">
+        <id property="pid" column="pid"></id>
+        <result property="pname" column="pname"></result>
+        <result property="market_price" column="market_price"></result>
+        <result property="shop_price" column="shop_price"></result>
+        <result property="image" column="image"></result>
+        <result property="pdesc" column="pdesc"></result>
+        <result property="is_hot" column="is_hot"></result>
+        <result property="pdate" column="pdate"></result>
+        <result property="csid" column="csid"></result>
+        <result property="count" column="count"></result>
+        <result property="storeId" column="storeId"></result>
+        <association property="store" javaType="Store">
+            <id property="storeId" column="storeId"></id>
+            <result property="storeName" column="storeName"></result>
+            <result property="storeDate" column="storeDate"></result>
+            <result property="storeDesc" column="storeDesc"></result>
+            <result property="storeImg" column="storeImg"></result>
+            <result property="storeName" column="storeName"></result>
+        </association>
+
+    </resultMap>
+
+
+    <select id="findProductByPid" parameterType="int" resultMap="productByPid">
+        select *
+        from product
+            inner join store
+                on product.storeId = store.storeId
+        where pid = #{pid}
+    </select>
+
+
+    <!-- 根据条件查询商品 -->
+    <select id="findProductsByCaOrPn" parameterType="com.aishang.util.PageBeanForProduct" resultType="Product">
+        select a.*
+        from product a inner join categorysecond b
+        on a.csid = b.csid
+        <where>
+            <if test="cid != null">
+                and b.cid = #{cid}
+            </if>
+            <if test="csid != null">
+                and b.csid = #{csid}
+            </if>
+            <if test="pname != null">
+                and a.pname like '%${pname}%'
+            </if>
+            limit #{startLimit},#{pageSize}
+        </where>
+    </select>
+
+    <!-- 根据条件查询商品数量 -->
+    <select id="getRowCoutByCaOrPn" parameterType="com.aishang.util.PageBeanForProduct" resultType="int">
+        select count(*)
+        from product a inner join categorysecond b
+        on a.csid = b.csid
+        <where>
+            <if test="cid != null">
+                and b.cid = #{cid}
+            </if>
+            <if test="csid != null">
+                and b.csid = #{csid}
+            </if>
+            <if test="pname != null">
+                and a.pname like '%${pname}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>

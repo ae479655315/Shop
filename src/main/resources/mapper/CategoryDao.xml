@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.aishang.dao.ICategoryDao">
+    <!-- 查询全部一级类目 -->
+    <select id="findAllCategories" resultType="com.aishang.model.Category">
+        select * from category
+    </select>
+
+    <!-- 查询全部一级类目ID -->
+    <select id="findAllCid" resultType="int">
+        select cid from category
+    </select>
+
+    <!-- 根据一级类目查询当下二级类目 -->
+    <select id="findCategorysecondsByCid" resultType="com.aishang.model.Categorysecond" parameterType="int">
+        select * from categorysecond where cid = #{cid}
+    </select>
+
+
+    <resultMap id="categoryWappers" type="com.aishang.model.CategoryWapper">
+        <id property="cid" column="cid"/>
+        <result property="cname" column="cname"/>
+        <collection property="categorysecondWappers" ofType="com.aishang.model.CategorysecondWapper">
+            <id property="csid" column="csid"/>
+            <result property="csname" column="csname"/>
+        </collection>
+    </resultMap>
+
+    <!-- 分页列表 -->
+    <select id="findAllCategoryWappers" resultMap="categoryWappers">
+         select a.cid,a.cname,b.csid,b.csname
+            from category a INNER JOIN categorysecond b
+            on a.cid = b.cid
+    </select>
+
+    <!-- 根据二级类目ID查询一级类目ID -->
+    <select id="getCidByCsid" parameterType="int" resultType="int">
+        select cid
+        from categorysecond
+        where csid = #{csid}
+    </select>
+
+</mapper>
