@@ -7,7 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -20,6 +21,10 @@
     <script type="text/javascript">
         $(function () {
             var add = $("#add");
+            var buy = $("#buy");
+            var collect = $("#collect");
+            var collectStore = $("#collectStore");
+            //加入购物车
             add.click(function () {
                 var count = $("#count").val();
                 $.ajax({
@@ -35,15 +40,98 @@
                         }
                     }
                 });
+            });
+
+            //立即购买
+            buy.click(function () {
+                var pid =  ${product.pid}
+                var count = $("#count").val();
+                window.open("${pageContext.request.contextPath}/order/buyNow.do?pid="+pid+"&count="+count,"_self");
+            });
+
+            //收藏商品
+            collect.click(function () {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/product/collectProduct.do',
+                    data: {
+                        pid: ${product.pid}
+                    },
+                    dataType: 'text',
+                    success: function (data) {
+                        if (data == "ok") {
+                            alert("收藏成功！")
+                        }else if(data == "exist"){
+                            alert("您已收藏过该商品！")
+                        }else if(data == "no"){
+                            alert("请先登录！")
+                        }
+                    }
+                });
 
             })
+
+            //收藏店铺
+            collectStore.click(function () {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/store/collectStore.do',
+                    data: {
+                        sid: ${product.store.storeId}
+                    },
+                    dataType: 'text',
+                    success: function (data) {
+                        if (data == "ok") {
+                            alert("收藏成功！")
+                        }else if(data == "exist"){
+                            alert("您已收藏过该店铺！")
+                        }else if(data == "no"){
+                            alert("请先登录！")
+                        }
+                    }
+                });
+
+            })
+
         });
     </script>
 </head>
 
 <body style="position:relative;">
 <!--header-->
-<%@include file="top.jsp" %>
+<div class="zl-header">
+    <div class="zl-hd w1200">
+        <p class="hd-p1 f-l">
+            Hi!您好，
+            <c:if test="${empty user}">
+                欢迎来到爱尚微购， 请<a href="${pageContext.request.contextPath}/user/login.do">【登录】</a> <a
+                    href="${pageContext.request.contextPath}/user/register.do">【免费注册】</a>
+            </c:if>
+            <c:if test="${!empty user}">
+                ${user.username}
+                <a href="${pageContext.request.contextPath}/user/quitLogin.do">【退出登录】</a>
+            </c:if>
+
+        </p>
+        <p class="hd-p2 f-r">
+            <a href="${pageContext.request.contextPath}/user/personMessage.do">个人中心</a><span>|</span>
+            <a href="${pageContext.request.contextPath}/home/index.do">返回首页</a><span>|</span>
+            <a href="${pageContext.request.contextPath}/product/showCartItem.do">我的购物车</a><span>|</span>
+            <a href="${pageContext.request.contextPath}/order/myOrders.do">我的订单</a>
+        </p>
+        <div style="clear:both;"></div>
+    </div>
+</div>
+
+<!--logo search weweima-->
+<div class="logo-search w1200">
+    <div class="logo-box f-l">
+        <div class="logo f-l">
+            <a href=" ${pageContext.request.contextPath}/home/index.do" title="爱尚logo"><img
+                    src="${pageContext.request.contextPath}/images/images/zl2-01.gif"/></a>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
 
 <!--nav-->
 <%--<%@include file="nav.jsp" %>--%>
@@ -55,32 +143,29 @@
             <div class="dt-if1-datu">
                 <%-- 商品大图 --%>
                 <ul qie-da="">
-                    <li><a href="#"><img src="${pageContext.request.contextPath}/${product.image}" width="359" height="351" /></a></li>
-                    <li><a href="#"><img src="${pageContext.request.contextPath}/${product.image}" width="359" height="351" /></a></li>
-                    <li><a href="#"><img src="${pageContext.request.contextPath}/${product.image}" width="359" height="351" /></a></li>
-                    <li><a href="#"><img src="${pageContext.request.contextPath}/${product.image}" width="359" height="351" /></a></li>
+                    <li><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}" width="359" height="351" /></a></li>
                     <div style="clear:both;"></div>
                 </ul>
             </div>
             <div class="dt-if1-qietu">
-                <a class="dt-qie-left f-l" href="JavaScript:;"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu-left.gif" /></a>
+                <a class="dt-qie-left f-l" href="JavaScript:;"></a>
                 <div class="dt-qie-con f-l">
                     <ul qie-xiao="">
-                        <li class="current"><a href="#"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu1.gif" /></a></li>
-                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu2.gif" /></a></li>
-                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu3.gif" /></a></li>
-                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu4.gif" /></a></li>
-                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu5.gif" /></a></li>
-                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu6.gif" /></a></li>
-                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu7.gif" /></a></li>
+                        <li class="current"><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}" width="60px" height="60px" /></a></li>
+                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}"  width="60px" height="60px"/></a></li>
+                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}"  width="60px" height="60px"/></a></li>
+                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}"  width="60px" height="60px"/></a></li>
+                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}"  width="60px" height="60px"/></a></li>
+                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}"  width="60px" height="60px"/></a></li>
+                        <li><a href="#"><img src="${pageContext.request.contextPath}/images/${product.image}"  width="60px" height="60px"/></a></li>
                         <div style="clear:both;"></div>
                     </ul>
                 </div>
-                <a class="dt-qie-right f-r" href="JavaScript:;"><img src="${pageContext.request.contextPath}/images/dt-if1-qietu-right.gif" /></a>
+                <a class="dt-qie-right f-r" href="JavaScript:;"><img src="${pageContext.request.contextPath}/images/images/dt-if1-qietu-right.gif" /></a>
             </div>
             <div class="dt-if1-fx">
                 <span>商品编码:${product.pid}</span>
-                <p>分享到：<a href="#"><img src="${pageContext.request.contextPath}/images/dt-xl.gif" /></a><a href="#"><img src="${pageContext.request.contextPath}/images/dt-kj.gif" /></a><a href="#"><img src="${pageContext.request.contextPath}/images/dt-wx.gif" /></a></p>
+                <p>分享到：<a href="#"><img src="${pageContext.request.contextPath}/images/images/dt-xl.gif" /></a><a href="#"><img src="${pageContext.request.contextPath}/images/images/dt-kj.gif" /></a><a href="#"><img src="${pageContext.request.contextPath}/images/images/dt-wx.gif" /></a></p>
             </div>
         </div>
 
@@ -97,8 +182,12 @@
                             <span class="sp1">¥${product.shop_price}</span><span class="sp2">${product.market_price}</span>
                         </p>
                         <p class="p2">
-                            <span class="sp1"><img src="${pageContext.request.contextPath}/images/dt-ifm-sp1-img.gif" />5分</span><span class="sp2">共有 2 条评价</span>
+                            <span class="sp1"><img src="${pageContext.request.contextPath}/images/images/dt-ifm-sp1-img.gif" />5分</span><span class="sp2">上架日期：<fmt:formatDate value="${product.pdate}" pattern="yyyy-MM-dd"/></span>
                         </p>
+                        <p class="p2">
+                            <span class="sp1">销量：${product.ps.salesVolume}</span><span class="sp1">库存:${product.ps.count}</span>
+                        </p>
+
                     </dd>
                     <div style="clear:both;"></div>
                 </dl>
@@ -121,9 +210,9 @@
                 <div style="clear:both;"></div>
             </dl>
             <div class="dt-ifm-box4">
-                <button class="btn1">立即购买</button>
+                <button class="btn1" id="buy">立即购买</button>
                 <button class="btn2" id="add">加入购物车</button>
-                <button class="btn3">收藏</button>
+                <button class="btn3" id="collect">收藏</button>
             </div>
         </div>
 
@@ -150,15 +239,15 @@
                 <div class="dt-ifr-tel">
                     <p>${product.store.storeDesc}</p>
                 </div>
-                <button class="dt-r-btn1">进入店铺</button>
-                <button class="dt-r-btn2">收藏店铺</button>
+                <button class="dt-r-btn1"><a href="${pageContext.request.contextPath}/store/showStore.do?sid=${product.store.storeId}" style="color: #FBFBFB    ">进入店铺</a></button>
+                <button class="dt-r-btn2" id="collectStore">收藏店铺</button>
             </div>
             <div class="dt-ifr-fd">
                 <div class="dt-ifr-tit">
                     <h3>同类推荐</h3>
                 </div>
                 <dl>
-                    <dt><a href="#"><img src="${pageContext.request.contextPath}/images/dt-ifr-fd-dt-tu.gif" /></a></dt>
+                    <dt><a href="#"><img src="${pageContext.request.contextPath}/images/images/dt-ifr-fd-dt-tu.gif" /></a></dt>
                     <dd>
                         <a href="#">【观音桥】罗兰钢管舞舞蹈体验</a>
                         <p>¥9.90</p>
@@ -166,7 +255,7 @@
                     <div style="clear:both;"></div>
                 </dl>
                 <dl>
-                    <dt><a href="#"><img src="${pageContext.request.contextPath}/images/dt-ifr-fd-dt-tu.gif" /></a></dt>
+                    <dt><a href="#"><img src="${pageContext.request.contextPath}/images/images/dt-ifr-fd-dt-tu.gif" /></a></dt>
                     <dd>
                         <a href="#">【观音桥】罗兰钢管舞舞蹈体验</a>
                         <p>¥9.90</p>
@@ -186,17 +275,17 @@
                 </div>
                 <ul>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a class="if2-li-tit" href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a class="if2-li-tit" href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li style="border-bottom:0;">
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a class="if2-li-tit" href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
@@ -208,17 +297,17 @@
                 </div>
                 <ul>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a class="if2-li-tit" href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a class="if2-li-tit" href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li style="border-bottom:0;">
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a class="if2-li-tit" href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
@@ -234,21 +323,21 @@
             </ul>
             <div style="border:1px solid #DBDBDB;" com-det-show="dt1">
                 <div class="if2-tu1">
-                    <img src="${pageContext.request.contextPath}/${product.image}" width="937" height="800" />
+                    <img src="${pageContext.request.contextPath}/images/${product.image}" width="937" height="800" />
                    <%-- <img src="${pageContext.request.contextPath}/${product.image}" style="margin-top:47px;" />--%>
                     <div style="clear:both;"></div>
                 </div>
                 <%--<div class="if2-tu2">
-                    <img src="${pageContext.request.contextPath}/images/if2-tu3.gif" />
+                    <img src="${pageContext.request.contextPath}/images/images/if2-tu3.gif" />
                     <div style="clear:both;"></div>
                 </div>
                 <div class="if2-tu3">
-                    <img src="${pageContext.request.contextPath}/images/if2-tu4.gif" />
+                    <img src="${pageContext.request.contextPath}/images/images/if2-tu4.gif" />
                 </div>
                 <ul class="if2-tu4">
-                    <li><img src="${pageContext.request.contextPath}/images/if2-tu5.gif" /></li>
-                    <li><img src="${pageContext.request.contextPath}/images/if2-tu6.gif" /></li>
-                    <li><img src="${pageContext.request.contextPath}/images/if2-tu7.gif" /></li>
+                    <li><img src="${pageContext.request.contextPath}/images/images/if2-tu5.gif" /></li>
+                    <li><img src="${pageContext.request.contextPath}/images/images/if2-tu6.gif" /></li>
+                    <li><img src="${pageContext.request.contextPath}/images/images/if2-tu7.gif" /></li>
                     <div style="clear:both;"></div>
                 </ul>--%>
             </div>
@@ -288,7 +377,7 @@
                     </ul>
                     <dl>
                         <dt>
-                            <a href="#"><img src="${pageContext.request.contextPath}/images/box3-dt-tu.gif" /></a>
+                            <a href="#"><img src="${pageContext.request.contextPath}/images/images/box3-dt-tu.gif" /></a>
                         </dt>
                         <dd>
                             <a href="#">胡**</a>
@@ -299,7 +388,7 @@
                     </dl>
                     <dl>
                         <dt>
-                            <a href="#"><img src="${pageContext.request.contextPath}/images/box3-dt-tu.gif" /></a>
+                            <a href="#"><img src="${pageContext.request.contextPath}/images/images/box3-dt-tu.gif" /></a>
                         </dt>
                         <dd>
                             <a href="#">胡**</a>
@@ -373,42 +462,42 @@
                 </div>
                 <ul>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>
                     <li>
-                        <a href="#"><img src="${pageContext.request.contextPath}/images/if2-l-box1-tu1.gif" /></a>
+                        <a href="#"><img src="${pageContext.request.contextPath}/images/images/if2-l-box1-tu1.gif" /></a>
                         <a href="#">乐事Lay's 无限薯片（翡翠黄瓜味）104g/罐</a>
                         <p>¥6.90</p>
                     </li>

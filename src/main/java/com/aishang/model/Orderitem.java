@@ -1,25 +1,25 @@
 package com.aishang.model;
 
 public class Orderitem {
-    private int itemid;
-    private int count;
+    private Integer itemid;
+    private Integer count;
     private double subtotal;
-    private int pid;
-    private int oid;
+    private Integer pid;
+    private Integer oid;
 
-    public int getItemid() {
+    public Integer getItemid() {
         return itemid;
     }
 
-    public void setItemid(int itemid) {
+    public void setItemid(Integer itemid) {
         this.itemid = itemid;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
@@ -31,19 +31,19 @@ public class Orderitem {
         this.subtotal = subtotal;
     }
 
-    public int getPid() {
+    public Integer getPid() {
         return pid;
     }
 
-    public void setPid(int pid) {
+    public void setPid(Integer pid) {
         this.pid = pid;
     }
 
-    public int getOid() {
+    public Integer getOid() {
         return oid;
     }
 
-    public void setOid(int oid) {
+    public void setOid(Integer oid) {
         this.oid = oid;
     }
 }

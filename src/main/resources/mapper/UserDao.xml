@@ -4,7 +4,13 @@
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.aishang.dao.IUserDao">
 
-    <select id="selectUser" resultType="User" parameterType="long">
+    <!-- 检验username是否重复 -->
+    <select id="checkUsername" parameterType="String" resultType="User">
+        select * from user
+        where username = #{username}
+    </select>
+
+    <select id="selectUser" resultType="User" parameterType="int">
         SELECT * FROM user WHERE id = #{id}
     </select>
 
@@ -19,14 +25,13 @@
 
     <select id="findUser" parameterType="com.aishang.model.User" resultType="com.aishang.model.User">
         select * from user
-        <where>
-            <if test="username != null and username !=''">
-                and username = #{username}
-            </if>
-            <if test="password != null and password !=''">
-                and password = #{password}
-            </if>
-        </where>
+        where username = #{username} and password = #{password}
     </select>
+
+    <update id="updateUser" parameterType="user">
+        update user set username=#{username},password=#{password},name=#{name},email=#{email},phone=#{phone},addr=#{addr},state=#{state}
+        where uid=#{uid}
+    </update>
+
 
 </mapper>

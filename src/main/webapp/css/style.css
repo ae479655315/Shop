@@ -1,6 +1,5 @@
 @charset "utf-8";
 /* CSS Document */
-
 /*CSS 初始化*/
 body, v, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th, td { margin:0; padding:0; }
 body {font-size:12px;font-family:"Microsoft Yahei",Heiti,arial,helvetica,sans-serif!important;line-height:21px;}
@@ -58,22 +57,6 @@ a:focus{outline:none; -moz-outline:none;}		/*解决  去除 a 链接点击后有
 .dianji .btn1 .btn1-l{ background-color:#F19F0B;}
 .dianji .btn1 .btn1-r{ background-color:#fff; color:#AB5100;}
 .dianji .btn2{ font-size:15px; color:#fff;}
-
-/*切换城市*/
-.switch-city{ margin:0 auto 15px; position:relative;}
-.switch-city .dianji-qh{ font-size:14px; color:#131313; margin:0 10px 0 15px;}
-.switch-city span{ font-size:14px; color:#AB5100;}
-.select-city{ display:none; width:1198px;background:#fff;position:absolute; left:-164px; top:33px; z-index:10;border: 1px solid #ccc;}
-.select-city .sl-city-top{ height:42px; background-color:#F2F2F2; border-bottom:1px solid #ccc;}
-.select-city .sl-city-top p{ line-height:42px; font-size:14px; color:#000; margin-left:12px;}
-.select-city .sl-city-top .close-select-city{ margin:12px;}
-.select-city .sl-city-con{padding:0 20px;}
-.select-city .sl-city-con p{ margin:20px 0; font-size:18px; color:#000;}
-.select-city .sl-city-con dt{ width:56px; font-size:14px; font-weight:bold; color:#000; float:left; margin-right:8px;}
-.select-city .sl-city-con dl{margin-bottom:10px;}
-.select-city .sl-city-con dd{ float:left; width:1094px;}
-.select-city .sl-city-con dd a{ display:inline-block; margin-right:10px; font-size:14px; color:#000;}
-.sl-city-con dd a:hover{ color:#63A61D;}
 
 /*nav 开始*/
 .nav{ position:relative;}
@@ -210,7 +193,7 @@ a:focus{outline:none; -moz-outline:none;}		/*解决  去除 a 链接点击后有
 
 .logo-search .search{width:600px; margin-top:25px;}
 .search .search-info{ width:596px; height:36px; padding:2px; background:#73B52D; border-radius:5px;}
-.search-info-input{ float:left; border:0; height:36px; width:446px; padding:0 10px 0 42px; background:#fff url(../images/zl2-03.gif) no-repeat 10px center;}
+.search-info-input{ float:left; border:0; height:36px; width:446px; padding:0 10px 0 42px; background:#fff url(../images/images/zl2-03.gif) no-repeat 10px center;}
 .search-info-sb{float:left; height:36px; width:198px; font-size:16px; color:#fff; border:0; background:none; cursor:pointer;}
 .search .search-ul{}
 .search-ul li{ float:left; margin:0 5px; line-height:30px;}

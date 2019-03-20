@@ -40,46 +40,66 @@ public class ProductController {
 
     //商品搜索
     @RequestMapping("/showProuctsByCaOrPn")
-    public String showProuctsByCaOrPn(Model model, String pname, Integer pageNow, Integer csid, Integer cid) {
-
-        //根据商品名称模糊查询商品列表
-        if (pageNow == null) {
-            pageNow = 1;
-        }
-
-        //如果按一级类目查询，则查出当前类目下三个热门商品
-        if (cid != null) {
-            model.addAttribute("page", "c");
-            //当前类目下的3个最新品
-            List<Product> newProducts = productService.findNewProductsByCid(cid);
-            model.addAttribute("newProducts", newProducts);
-        }
-
-        //如果按二级类目查询，则查出当前类目下三个热门商品
-        if (pname != null) {
+    public String showProuctsByCaOrPn(Model model, PageBeanForProduct pageBean, Integer by) {
+        if (by != null && by == 2) {
+            //查询店铺
             try {
-                pname = new String(pname.getBytes("iso-8859-1"), "UTF-8");
+                pageBean.setPname(new String(pageBean.getPname().getBytes("iso-8859-1"), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            model.addAttribute("page", "p");
-            //当前二级类目下的3个最新品
-            List<Product> newProducts = productService.findNewProductsByCsid(1);
-            model.addAttribute("newProducts", newProducts);
+            List<StoreWapper> stores = storeService.findStoreBySname(pageBean.getPname());
+            model.addAttribute("stores", stores);
+            //回显查询条件
+            Product product = new Product();
+            product.setPname(pageBean.getPname());
+            model.addAttribute("products", product);
+            model.addAttribute("by", by);
+            //查询该店铺的推荐商品
+            List<ProductWapper> newProductWappers = storeService.findNewProductBySid(1);
+            model.addAttribute("newProductWappers", newProductWappers);
+            this.categoryAndHotPro(model);
+            return "storeList";
+        } else {
+            //查询商品
+            //根据商品名称模糊查询商品列表
+            if (pageBean.getPageNow() == null) {
+                pageBean.setPageNow(1);
+            }
+            //如果按一级类目查询，则查出当前类目下三个热门商品
+            if (pageBean.getCid() != null) {
+                model.addAttribute("page", "c");
+                //当前类目下的3个最新品
+                List<Product> newProducts = productService.findNewProductsByCid(pageBean.getCid());
+                model.addAttribute("newProducts", newProducts);
+            }
+
+            //如果按二级类目查询，则查出当前类目下三个热门商品
+            if (pageBean.getPname() != null) {
+                try {
+                    pageBean.setPname(new String(pageBean.getPname().getBytes("iso-8859-1"), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                model.addAttribute("page", "p");
+                //当前二级类目下的3个最新品
+                List<Product> newProducts = productService.findNewProductsByCsid(1);
+                model.addAttribute("newProducts", newProducts);
+            }
+
+            //如果按二级类目查询，则查出当前类目下三个热门商品
+            if (pageBean.getCsid() != null) {
+                model.addAttribute("page", "cs");
+                //当前二级类目下的3个最新品
+                List<Product> newProducts = productService.findNewProductsByCsid(pageBean.getCsid());
+                model.addAttribute("newProducts", newProducts);
+            }
+
+            PageBeanForProduct<ProductWapper> products = productService.fingProuctsByCaOrPn(pageBean);
+            model.addAttribute("products", products);
+
+            this.categoryAndHotPro(model);
         }
-
-        //如果按二级类目查询，则查出当前类目下三个热门商品
-        if (csid != null) {
-            model.addAttribute("page", "cs");
-            //当前二级类目下的3个最新品
-            List<Product> newProducts = productService.findNewProductsByCsid(csid);
-            model.addAttribute("newProducts", newProducts);
-        }
-        PageBeanForProduct<Product> products = productService.fingProuctsByCaOrPn(cid, csid, pname, pageNow);
-        model.addAttribute("products", products);
-
-        this.categoryAndHotPro(model);
-
         return "productList";
     }
 
@@ -102,18 +122,55 @@ public class ProductController {
 
     ;
 
+    //收藏商品
+    @RequestMapping("/collectProduct")
+    public void collectProduct(HttpSession session, HttpServletResponse response, Integer pid) throws IOException {
+        //响应客户端
+        PrintWriter out = response.getWriter();
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            //未登录，跳转至登录页
+            out.print("no");
+            return;
+        }
+        Collectproduct collectproduct = new Collectproduct();
+        collectproduct.setPid(pid);
+        collectproduct.setUid(user.getUid());
+        //查看当前用户是否已经搜藏过该商品
+        Collectproduct productIsExist = productService.checkProductIsExist(collectproduct);
+        if (productIsExist != null) {
+            //以收藏过该商品
+            out.print("exist");
+            return;
+        }
+        //调用service 方法执行收藏商品
+        productService.collectProduct(collectproduct);
+        out.print("ok");
+    }
+
+    //取消收藏
+    @RequestMapping("/cancelCollection")
+    public String cancelCollection(HttpSession session, HttpServletResponse response, Integer pid) throws IOException {
+        //响应客户端
+        PrintWriter out = response.getWriter();
+        User user = (User) session.getAttribute("user");
+        Collectproduct collectproduct = new Collectproduct();
+        collectproduct.setPid(pid);
+        collectproduct.setUid(user.getUid());
+        //调用service 执行取消收藏
+        productService.cancelCollection(collectproduct);
+        return "redirect:myCollectProduct.do";
+    }
+
     //加入购物车
     @RequestMapping("/addCartItem")
-    public void addCart(HttpServletRequest request, HttpServletResponse response, Integer count, Integer pid) throws IOException {
+    public void addCart(HttpSession session, HttpServletResponse response, Integer count, Integer pid) throws IOException {
         //封装CartItem
         CartItem cartItem = new CartItem();
         Product pro = productService.findProductByPid(pid);
-        System.out.println("product:" + pro.getShop_price());
         cartItem.setProduct(pro);
         cartItem.setCount(count);
-        System.out.println("cartItem:" + cartItem.getSubTotal());
         //将购物车存入session
-        HttpSession session = request.getSession();
         Cart cart = null;
         if (session.getAttribute("cart") == null) {
             //第一次加入购物车
@@ -125,7 +182,6 @@ public class ProductController {
             cart = (Cart) session.getAttribute("cart");
             cart.addCartItem(cartItem, pro.getStoreId());
         }
-        System.out.println("cart:" + cart.getTotal());
         //响应客户端
         PrintWriter out = response.getWriter();
         out.print("ok");
@@ -153,7 +209,7 @@ public class ProductController {
         Integer size = cart.removeItem(pid, storeId);
         //响应客户端
         PrintWriter out = response.getWriter();
-        out.print(size+"-"+cart.getCartItemMap().size());
+        out.print(size + "-" + cart.getCartItemMap().size());
     }
 
 
@@ -166,6 +222,29 @@ public class ProductController {
         cart.clearCatr();
         return "redirect:showCartItem.do";
     }
+
+
+    //我收藏的商品
+    @RequestMapping("myCollectProduct")
+    public String myCollectProduct(HttpServletRequest request, Model model, Integer pageNow) {
+        if (pageNow == null) {
+            pageNow = 1;
+        }
+        //从session中获取cart
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            //未登录，跳转至登录页
+            return "redirect:/user/login.do";
+        }
+        User user = (User) session.getAttribute("user");
+        //pageBean
+        PageBeanForProduct<ProductWapper> productWappers = productService.findProductByUid(user.getUid(), pageNow);
+        model.addAttribute("products", productWappers);
+        //查询一类类目扩展类集合和热门商品(类目联动与搜索栏使用)
+        categoryAndHotPro(model);
+        return "collectProduct";
+    }
+
 
     private void categoryAndHotPro(Model model) {
         //查询一类类目扩展类集合

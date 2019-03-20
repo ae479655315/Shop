@@ -12,9 +12,7 @@ public class Product {
     private Integer is_hot;        //是否热门
     private Date pdate;            //生产日期
     private Integer csid;          //所属二级类目
-    private Integer count;         //商品库存
     private Integer storeId;       //店铺id
-    private Integer state;         //商品状态（上架，下架）
 
     public Integer getPid() {
         return pid;
@@ -88,14 +86,6 @@ public class Product {
         this.csid = csid;
     }
 
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
     public Integer getStoreId() {
         return storeId;
     }
@@ -104,11 +94,19 @@ public class Product {
         this.storeId = storeId;
     }
 
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "pid=" + pid +
+                ", pname='" + pname + '\'' +
+                ", market_price=" + market_price +
+                ", shop_price=" + shop_price +
+                ", image='" + image + '\'' +
+                ", pdesc='" + pdesc + '\'' +
+                ", is_hot=" + is_hot +
+                ", pdate=" + pdate +
+                ", csid=" + csid +
+                ", storeId=" + storeId +
+                '}';
     }
 }

@@ -1,7 +1,9 @@
 package com.aishang.service;
 
+import com.aishang.model.Collectproduct;
 import com.aishang.model.Product;
 import com.aishang.model.ProductWapper;
+import com.aishang.model.User;
 import com.aishang.util.PageBeanForProduct;
 
 import java.util.List;
@@ -29,5 +31,20 @@ public interface IProductService {
     ProductWapper findProductByPid(Integer pid);
 
     //根据商品名称查询商品
-    PageBeanForProduct<Product> fingProuctsByCaOrPn(Integer cid,Integer csid,String pname, Integer pageNow);
+    PageBeanForProduct<ProductWapper> fingProuctsByCaOrPn(PageBeanForProduct pageBeanForProduct);
+
+    //查询收藏商品
+    PageBeanForProduct<ProductWapper> findProductByUid(int uid,Integer pageNow);
+
+    //修改商品的销量与库存
+    void updateProductState(Integer pid);
+
+    //收藏商品
+    void collectProduct(Collectproduct collectproduct);
+
+    //查看当前用户是否已经搜藏过该商品
+    Collectproduct checkProductIsExist(Collectproduct collectproduct);
+
+    //取消收藏
+    void cancelCollection(Collectproduct collectproduct);
 }

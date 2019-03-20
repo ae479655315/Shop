@@ -5,7 +5,7 @@
 <mapper namespace="com.aishang.dao.ICategoryDao">
     <!-- 查询全部一级类目 -->
     <select id="findAllCategories" resultType="com.aishang.model.Category">
-        select * from category
+        select * from category limit 0,8
     </select>
 
     <!-- 查询全部一级类目ID -->
@@ -33,6 +33,7 @@
          select a.cid,a.cname,b.csid,b.csname
             from category a INNER JOIN categorysecond b
             on a.cid = b.cid
+            where a.cid between 0 and 8
     </select>
 
     <!-- 根据二级类目ID查询一级类目ID -->

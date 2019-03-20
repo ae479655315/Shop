@@ -3,20 +3,29 @@ package com.aishang.model;
 import java.util.Date;
 
 public class Orders {
-    private int oid;
+    private Integer oid;
     private double total;
-    private Date rdertime;
-    private int state;
+    private Date ordertime;
+    private Integer state;
     private String name;
     private String phone;
     private String addr;
-    private int uid;
+    private Integer uid;
+    private Integer storeId;
 
-    public int getOid() {
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
+
+    public Integer getOid() {
         return oid;
     }
 
-    public void setOid(int oid) {
+    public void setOid(Integer oid) {
         this.oid = oid;
     }
 
@@ -28,19 +37,19 @@ public class Orders {
         this.total = total;
     }
 
-    public Date getRdertime() {
-        return rdertime;
+    public Date getOrdertime() {
+        return ordertime;
     }
 
-    public void setRdertime(Date rdertime) {
-        this.rdertime = rdertime;
+    public void setOrdertime(Date ordertime) {
+        this.ordertime = ordertime;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
@@ -68,11 +77,26 @@ public class Orders {
         this.addr = addr;
     }
 
-    public int getUid() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "oid=" + oid +
+                ", total=" + total +
+                ", rdertime=" + ordertime +
+                ", state=" + state +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", addr='" + addr + '\'' +
+                ", uid=" + uid +
+                '}';
     }
 }

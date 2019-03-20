@@ -5,9 +5,10 @@
 <mapper namespace="com.aishang.dao.IProductDao">
     <!-- 查询热门商品 -->
     <select id="findHotProducts" resultType="Product">
-        select *
-        from product
-        where is_Hot = 1
+        select product.*
+        from product inner join productstate
+                on product.pid = productstate.pid
+        ORDER BY productstate.salesVolume desc
         limit 6
     </select>
 
@@ -50,7 +51,6 @@
         <result property="is_hot" column="is_hot"></result>
         <result property="pdate" column="pdate"></result>
         <result property="csid" column="csid"></result>
-        <result property="count" column="count"></result>
         <result property="storeId" column="storeId"></result>
         <association property="store" javaType="Store">
             <id property="storeId" column="storeId"></id>
@@ -60,54 +60,154 @@
             <result property="storeImg" column="storeImg"></result>
             <result property="storeName" column="storeName"></result>
         </association>
+        <association property="ps" javaType="ProductsState">
+            <id property="pid" column="pid"></id>
+            <result property="count" column="count"></result>
+            <result property="salesVolume" column="salesVolume"></result>
+        </association>
 
     </resultMap>
 
 
     <select id="findProductByPid" parameterType="int" resultMap="productByPid">
         select *
-        from product
-            inner join store
+        from product inner join store
                 on product.storeId = store.storeId
-        where pid = #{pid}
+            inner join productstate
+                on product.pid = productstate.pid
+        where product.pid = #{pid}
     </select>
 
 
     <!-- 根据条件查询商品 -->
-    <select id="findProductsByCaOrPn" parameterType="com.aishang.util.PageBeanForProduct" resultType="Product">
-        select a.*
-        from product a inner join categorysecond b
-        on a.csid = b.csid
+    <resultMap id="products" type="ProductWapper">
+        <id property="pid" column="pid"></id>
+        <result property="pname" column="pname"></result>
+        <result property="market_price" column="market_price"></result>
+        <result property="shop_price" column="shop_price"></result>
+        <result property="image" column="image"></result>
+        <result property="pdesc" column="pdesc"></result>
+        <result property="is_hot" column="is_hot"></result>
+        <result property="pdate" column="pdate"></result>
+        <result property="csid" column="csid"></result>
+        <result property="storeId" column="storeId"></result>
+        <association property="ps" javaType="ProductsState">
+            <id property="pid" column="productstate.pid"></id>
+            <result property="count" column="count"></result>
+            <result property="salesVolume" column="salesVolume"></result>
+        </association>
+    </resultMap>
+    <select id="findProductsByCaOrPn" parameterType="com.aishang.util.PageBeanForProduct" resultMap="products">
+        select product.*,categorysecond.*,productstate.*
+        from product inner join categorysecond
+        on product.csid = categorysecond.csid
+        inner join productstate
+        on product.pid = productstate.pid
         <where>
             <if test="cid != null">
-                and b.cid = #{cid}
+                and categorysecond.cid = #{cid}
             </if>
             <if test="csid != null">
-                and b.csid = #{csid}
+                and categorysecond.csid = #{csid}
             </if>
             <if test="pname != null">
-                and a.pname like '%${pname}%'
+                and product.pname like '%${pname}%'
             </if>
-            limit #{startLimit},#{pageSize}
         </where>
+        <if test='sort == "salesVolume"'>
+            order by salesVolume desc
+        </if>
+        <if test='sort == "pdate"'>
+            order by pdate desc
+        </if>
+        limit #{startLimit},#{pageSize}
     </select>
 
     <!-- 根据条件查询商品数量 -->
     <select id="getRowCoutByCaOrPn" parameterType="com.aishang.util.PageBeanForProduct" resultType="int">
         select count(*)
-        from product a inner join categorysecond b
-        on a.csid = b.csid
+        from product inner join categorysecond
+        on product.csid = categorysecond.csid
+        inner join productstate
+        on product.pid = productstate.pid
         <where>
             <if test="cid != null">
-                and b.cid = #{cid}
+                and categorysecond.cid = #{cid}
             </if>
             <if test="csid != null">
-                and b.csid = #{csid}
+                and categorysecond.csid = #{csid}
             </if>
             <if test="pname != null">
-                and a.pname like '%${pname}%'
+                and product.pname like '%${pname}%'
             </if>
         </where>
+        <if test="sort != null">
+            order by #{sort} desc
+        </if>
     </select>
+
+    <!-- 收藏的商品 -->
+    <resultMap id="productByUid" type="ProductWapper">
+        <id property="pid" column="pid"></id>
+        <result property="pname" column="pname"></result>
+        <result property="market_price" column="market_price"></result>
+        <result property="shop_price" column="shop_price"></result>
+        <result property="image" column="image"></result>
+        <result property="pdesc" column="pdesc"></result>
+        <result property="is_hot" column="is_hot"></result>
+        <result property="pdate" column="pdate"></result>
+        <result property="csid" column="csid"></result>
+        <result property="storeId" column="storeId"></result>
+        <association property="ps" javaType="ProductsState">
+            <id property="pid" column="pid"></id>
+            <result property="count" column="count"></result>
+            <result property="salesVolume" column="salesVolume"></result>
+        </association>
+    </resultMap>
+    <select id="findProductByUid" parameterType="com.aishang.util.PageBeanForProduct" resultMap="productByUid">
+        select *
+        from product inner join collectproduct
+                on product.pid = collectproduct.pid
+            inner join productstate
+            on product.pid = productstate.pid
+        where uid = #{uid}
+        order by product.pid desc
+        limit #{startLimit},#{pageSize}
+    </select>
+
+
+    <!-- 收藏的商品的总记录数 -->
+    <select id="findProductCountByUid" parameterType="int" resultType="int">
+        select count(*)
+        from product inner join collectproduct
+                on product.pid = collectproduct.pid
+        where uid = #{uid}
+    </select>
+
+
+    <!-- 修改商品的销量与库存 -->
+    <update id="updateProductState" parameterType="int">
+       update productstate set count = count - 1 ,salesVolume = salesVolume + 1
+       where pid = #{pid}
+    </update>
+
+    <!-- 添加收藏的商品 -->
+    <insert id="collectProduct" parameterType="Collectproduct">
+        insert into collectproduct
+        values(#{uid},#{pid});
+    </insert>
+
+    <!-- 查看当前用户是否已经搜藏过该商品 -->
+    <select id="checkProductIsExist" parameterType="Collectproduct" resultType="Collectproduct">
+        select *
+        from collectproduct
+        where uid=#{uid} and pid=#{pid}
+    </select>
+
+    <!-- 取消收藏的商品 -->
+    <delete id="cancelCollection" parameterType="Collectproduct">
+        delete collectproduct from collectproduct where uid=#{uid} and pid=#{pid}
+    </delete>
+
 
 </mapper>

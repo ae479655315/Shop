@@ -16,7 +16,7 @@
                 <c:forEach items="${categoryWappers}" var="c" begin="0" end="5" step="1">
                     <div class="kuaijie-info">
                         <dl class="kj-dl1">
-                            <dt><img src="${pageContext.request.contextPath}/images/zl2-07.gif"/><a
+                            <dt><img src="${pageContext.request.contextPath}/images/images/zl2-07.gif"/><a
                                     href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?cid=${c.cid}">${c.cname}</a></dt>
                             <dd>
                                 <c:forEach items="${c.categorysecondWappers}" var="cs" begin="0" end="2" step="1"
@@ -54,7 +54,7 @@
                 <c:if test="${vs.last}">
                     <li>
                         <a href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?cid=${c.cid}">${c.cname}</a><span><img
-                            src=" ${pageContext.request.contextPath}/images/zl2-05.gif"/></span></li>
+                            src=" ${pageContext.request.contextPath}/images/images/zl2-05.gif"/></span></li>
                 </c:if>
             </c:forEach>
             <div style="clear:both;"></div>

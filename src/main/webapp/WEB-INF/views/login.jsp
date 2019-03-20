@@ -21,21 +21,21 @@
 <body>
 
 <div class="sign-logo w1200">
-    <h1 class="zl-h11"><a href="index.html" title="爱尚微购"><img src=" ${pageContext.request.contextPath}/images/zl2-01.gif" /></a></h1>
+    <h1 class="zl-h11"><a href="${pageContext.request.contextPath}/index.do" title="爱尚微购"><img src=" ${pageContext.request.contextPath}/images/images/zl2-01.gif" /></a></h1>
 </div>
 <form action="${pageContext.request.contextPath}/user/doLogin.do" method="post">
 <div class="sign-con w1200">
-    <img src=" ${pageContext.request.contextPath}/images/logn-tu.gif" class="sign-contu f-l" />
+    <img src=" ${pageContext.request.contextPath}/images/images/logn-tu.gif" class="sign-contu f-l" />
     <div class="sign-ipt f-l">
         <p>用户名</p>
         <input type="text" placeholder="请输入用户名" name="username" value="${username}" />
         <p>密码</p>
         <input type="password" placeholder="请输入密码" name="password" /><br />
         <button class="slig-btn">登录</button>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="wj">忘记密码？</a></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/register.do" class="wj">免费注册</a></p>
         <div class="sign-qx">
-            <a href="#" class="f-r"><img src=" ${pageContext.request.contextPath}/images/sign-xinlan.gif" /></a>
-            <a href="#" class="qq f-r"><img src=" ${pageContext.request.contextPath}/images/sign-qq.gif" /></a>
+            <a href="#" class="f-r"><img src=" ${pageContext.request.contextPath}/images/images/sign-xinlan.gif" /></a>
+            <a href="#" class="qq f-r"><img src=" ${pageContext.request.contextPath}/images/images/sign-qq.gif" /></a>
             <div style="clear:both;"></div>
         </div>
     </div>
@@ -47,35 +47,35 @@
     <ul class="footer-info1 w1200">
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-86.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-86.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">号码保障</a></h3>
             <P>所有会员，手机短信验证</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-87.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-87.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">6*12小时客服</a></h3>
             <P>有任何问题随时免费资讯</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-88.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-88.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">专业专攻</a></h3>
             <P>我们只专注于建筑行业的信息服务</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-89.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-89.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">注册有礼</a></h3>
             <P>随时随地注册有大礼包</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-90.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-90.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">值得信赖</a></h3>
             <P>专业的产品，专业的团队</P>
@@ -139,9 +139,9 @@
             <a href="#">互联网药品交易服务资格证</a>
         </p>
         <div class="ft-if3-tu1">
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-91.gif" /></a>
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-92.gif" /></a>
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-93.gif" /></a>
+            <a href="#"><img src=" ${pageContext.request.contextPath}/images/images/zl2-91.gif" /></a>
+            <a href="#"><img src=" ${pageContext.request.contextPath}/images/images/zl2-92.gif" /></a>
+            <a href="#"><img src=" ${pageContext.request.contextPath}/images/images/zl2-93.gif" /></a>
         </div>
     </div>
 </div>

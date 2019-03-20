@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -21,7 +21,7 @@
     <script type="text/javascript">
         $(function () {
             var username = $("#username");
-            var msg = $("#msg");
+            var msg = $("#msg1");
             username.blur(function () {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/user/checkUsername.do",   //请求路径，读取user.js文件
@@ -32,16 +32,17 @@
                     type: "GET",//请求方式
                     success: function (data) {//成功处理函数
                         var jsons = data;
-                        if( jsons == ""){
-                            msg.attr("class","dui");
+                        if (jsons == "") {
+                            msg.attr("class", "dui");
                             msg.html("<font color='#006400'>可以使用</font>");
-                            $("#bt").removeAttr("disabled");//将按钮可用
+                            $("#sb").removeAttr("disabled");//将按钮可用
+                            return;
                         }
                         for (var i = 0; i < jsons.length; i++) {
-                            if(jsons[i].username != null && jsons[i].username != ""){
-                                msg.attr("class","cuo");
+                            if (jsons[i].username != null && jsons[i].username != "") {
+                                msg.attr("class", "cuo");
                                 msg.html("<font color='red'>用户名已存在</font>");
-                                $("#bt").attr({"disabled":"disabled"});
+                                $("#sb").attr({"disabled": "disabled"});
                             }
                         }
                     }
@@ -49,28 +50,69 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        //点击切换验证码
+        function changeVerifyCode() {
+            $("#yzmImg").attr("src", "${pageContext.request.contextPath}/yzm/yzm.do?" + Math.floor(Math.random() * 100));
+        }
+
+    </script>
 
 </head>
 
 <body>
 
-<%@include file="top.jsp" %>
+<div class="zl-header">
+    <div class="zl-hd w1200">
+        <p class="hd-p1 f-l">
+            Hi!您好，
+            <c:if test="${empty user}">
+                欢迎来到爱尚微购， 请<a href="${pageContext.request.contextPath}/user/login.do">【登录】</a> <a
+                    href="${pageContext.request.contextPath}/user/register.do">【免费注册】</a>
+            </c:if>
+            <c:if test="${!empty user}">
+                ${user.username}
+                <a href="${pageContext.request.contextPath}/user/quitLogin.do">【退出登录】</a>
+            </c:if>
+
+        </p>
+        <p class="hd-p2 f-r">
+            <a href="${pageContext.request.contextPath}/user/personMessage.do">个人中心</a><span>|</span>
+            <a href="${pageContext.request.contextPath}/home/index.do">返回首页</a><span>|</span>
+            <a href="${pageContext.request.contextPath}/product/showCartItem.do">我的购物车</a><span>|</span>
+            <a href="${pageContext.request.contextPath}/order/myOrders.do">我的订单</a>
+        </p>
+        <div style="clear:both;"></div>
+    </div>
+</div>
+
+<!--logo search weweima-->
+<div class="logo-search w1200">
+    <div class="logo-box f-l">
+        <div class="logo f-l">
+            <a href=" ${pageContext.request.contextPath}/index.do" title="爱尚logo"><img
+                    src="${pageContext.request.contextPath}/images/images/zl2-01.gif"/></a>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <div style="clear:both;"></div>
+</div>
 <!--内容开始-->
-<form action="${pageContext.request.contextPath}/user/doRegister.do" method="post">
+<form action="${pageContext.request.contextPath}/user/doRegister.do" method="post" onsubmit="return check()">
     <div class="password-con registered">
         <div class="psw">
             <p class="psw-p1">用户名</p>
             <input type="text" placeholder="请输入用户名" id="username" name="username"/>
-            <span id="msg"></span>
+            <span id="msg1"></span>
         </div>
         <div class="psw">
             <p class="psw-p1">输入密码</p>
-            <input type="text" placeholder="请输入密码" id="password" name="password"/>
+            <input type="password" placeholder="请输入密码" id="password" name="password"/>
             <span id="msg2"></span>
         </div>
         <div class="psw">
             <p class="psw-p1">确认密码</p>
-            <input type="text" id="repassword" placeholder="请再次确认密码"/>
+            <input type="password" id="repassword" placeholder="请再次确认密码"/>
             <span id="msg3"></span>
         </div>
         <div class="psw psw1">
@@ -95,128 +137,27 @@
         </div>
         <div class="psw psw3">
             <p class="psw-p1">验证码</p>
-            <input type="text" placeholder="请输入验证码"/>
+            <input type="text" id="yzm" placeholder="请输入验证码" name="yzm"/>
             <span id="msg8"></span>
         </div>
         <div class="yanzhentu">
             <div class="yz-tu f-l">
-                <img src="${pageContext.request.contextPath}/images/psw-yanzhengtu.gif"/>
+                <img src="${pageContext.request.contextPath}/yzm/yzm.do" onclick="changeVerifyCode()" id="yzmImg"
+                     width="163px" height="64px"/>
+                </p>
+                <div style="clear:both;"></div>
             </div>
-            <p class="f-l">看不清？<a href="#">换张图</a></p>
-            <div style="clear:both;"></div>
+            <br><br><br>
+            <div class="agreement">
+                <input type="checkbox" name="hobby"></input>
+                <p>我有阅读并同意<span>《宅客微购网站服务协议》</span></p>
+            </div>
+            <input type="submit" id="sb" value="立即注册" class="psw-btn">
         </div>
-        <div class="agreement">
-            <input type="checkbox" name="hobby"></input>
-            <p>我有阅读并同意<span>《宅客微购网站服务协议》</span></p>
-        </div>
-        <input type="submit" id="bt" value="立即注册" class="psw-btn" onclick="return check()">
-
-        <p class="sign-in">已有账号？请<a href="${pageContext.request.contextPath}/user/login.do">登录</a></p>
     </div>
 </form>
 <!--底部一块-->
-<div class="footer-box">
-    <ul class="footer-info1 w1200">
-        <li>
-            <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-86.gif"/></a>
-            </div>
-            <h3><a href="JavaScript:;">号码保障</a></h3>
-            <P>所有会员，手机短信验证</P>
-        </li>
-        <li>
-            <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-87.gif"/></a>
-            </div>
-            <h3><a href="JavaScript:;">6*12小时客服</a></h3>
-            <P>有任何问题随时免费资讯</P>
-        </li>
-        <li>
-            <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-88.gif"/></a>
-            </div>
-            <h3><a href="JavaScript:;">专业专攻</a></h3>
-            <P>我们只专注于建筑行业的信息服务</P>
-        </li>
-        <li>
-            <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-89.gif"/></a>
-            </div>
-            <h3><a href="JavaScript:;">注册有礼</a></h3>
-            <P>随时随地注册有大礼包</P>
-        </li>
-        <li>
-            <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-90.gif"/></a>
-            </div>
-            <h3><a href="JavaScript:;">值得信赖</a></h3>
-            <P>专业的产品，专业的团队</P>
-        </li>
-        <div style="clear:both;"></div>
-    </ul>
-    <div class="footer-info2 w1200">
-        <div class="ft-if2-left f-l">
-            <dl>
-                <dt><a href="6-1服务协议.html">新手上路</a></dt>
-                <dd>
-                    <a href="6-1服务协议.html">购物流程</a>
-                    <a href="6-1服务协议.html">在线支付</a>
-                    <a href="6-1服务协议.html">投诉与建议</a>
-                </dd>
-            </dl>
-            <dl>
-                <dt><a href="6-1服务协议.html">配送方式</a></dt>
-                <dd>
-                    <a href="6-1服务协议.html">货到付款区域</a>
-                    <a href="6-1服务协议.html">配送费标准</a>
-                </dd>
-            </dl>
-            <dl>
-                <dt><a href="6-1服务协议.html">购物指南</a></dt>
-                <dd>
-                    <a href="6-1服务协议.html">订购流程</a>
-                    <a href="6-1服务协议.html">购物常见问题</a>
-                </dd>
-            </dl>
-            <dl>
-                <dt><a href="6-1服务协议.html">售后服务</a></dt>
-                <dd>
-                    <a href="6-1服务协议.html">售后服务保障</a>
-                    <a href="6-1服务协议.html">退换货政策总则</a>
-                    <a href="6-1服务协议.html">自营商品退换细则</a>
-                </dd>
-            </dl>
-            <div style="clear:both;"></div>
-        </div>
-        <div class="ft-if2-right f-r">
-            <h3>400-2298-223</h3>
-            <p>周一至周日 9:00-24:00</p>
-            <p>（仅收市话费）</p>
-        </div>
-        <div style="clear:both;"></div>
-    </div>
-    <div class="footer-info3 w1200">
-        <p>
-            <a href="#">免责条款</a><span>|</span>
-            <a href="#">隐私保护</a><span>|</span>
-            <a href="#">咨询热点</a><span>|</span>
-            <a href="#">联系我们</a><span>|</span>
-            <a href="#">公司简介</a>
-        </p>
-        <p>
-            <a href="#">沪ICP备13044278号</a><span>|</span>
-            <a href="#">合字B1.B2-20130004</a><span>|</span>
-            <a href="#">营业执照</a><span>|</span>
-            <a href="#">互联网药品信息服务资格证</a><span>|</span>
-            <a href="#">互联网药品交易服务资格证</a>
-        </p>
-        <div class="ft-if3-tu1">
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-91.gif"/></a>
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-92.gif"/></a>
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-93.gif"/></a>
-        </div>
-    </div>
-</div>
+<%@include file="bottom.jsp" %>
 
 </body>
 </html>

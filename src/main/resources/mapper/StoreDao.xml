@@ -4,8 +4,153 @@
 <!-- 设置为IStoreDao接口方法提供sql语句配置 -->
 <mapper namespace="com.aishang.dao.IStoreDao">
 
-  <select id="findAllStores" resultType="Store">
-      select * from store
-  </select>
+    <select id="findAllStores" resultType="Store">
+        select *
+        from store
+    </select>
+
+    <!-- 查看收藏的店铺 -->
+    <resultMap id="myCollectStore" type="StoreWapper">
+        <id property="storeId" column="storeId"/>
+        <result property="storeName" column="storeName"/>
+        <result property="storeDate" column="storeDate"/>
+        <result property="storeDesc" column="storeDesc"/>
+        <result property="storeImg" column="storeImg"/>
+        <collection property="productWapperList" ofType="ProductWapper">
+            <id property="pid" column="pid"/>
+            <result property="pname" column="pname"/>
+            <result property="market_price" column="market_price"/>
+            <result property="shop_price" column="shop_price"/>
+            <result property="image" column="image"/>
+            <result property="pdesc" column="pdesc"/>
+            <result property="is_hot" column="is_hot"/>
+            <result property="csid" column="csid"/>
+            <result property="storeId" column="storeId"/>
+            <association property="ps" javaType="ProductsState">
+                <id property="pid" column="pid"/>
+                <result property="count" column="count"/>
+                <result property="salesVolume" column="salesVolume"/>
+                <result property="state" column="state"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="findMyCollectStore" parameterType="int" resultMap="myCollectStore">
+        select
+            store.*,
+            product.*
+        from collectstore
+            INNER JOIN user
+                on collectstore.uid = user.uid
+            inner join store
+                on collectstore.storeId = store.storeId
+            inner join product
+                on store.storeId = product.storeId
+        where user.uid = #{uid}
+    </select>
+
+    <!-- 模糊查询店铺 -->
+    <select id="findStoreBySname" parameterType="String" resultMap="myCollectStore">
+        select *
+        from store left join product
+        on store.storeId = product.storeId
+        left join productstate
+        on product.pid = productstate.pid
+        where store.storeName like '%${value}%'
+    </select>
+
+    <!-- 查询某店铺下商品总记录数 -->
+    <select id="getRowCoutBySid" parameterType="int" resultType="int">
+        select count(*)
+        from product
+            inner join productstate
+                on product.pid = productstate.pid
+        where product.storeId = #{sid}
+    </select>
+
+
+    <!-- 查询该店铺下商品分页列表 -->
+    <resultMap id="productsBySid" type="ProductWapper">
+        <id property="pid" column="pid"></id>
+        <result property="pname" column="pname"></result>
+        <result property="market_price" column="market_price"></result>
+        <result property="shop_price" column="shop_price"></result>
+        <result property="image" column="image"></result>
+        <result property="pdesc" column="pdesc"></result>
+        <result property="is_hot" column="is_hot"></result>
+        <result property="pdate" column="pdate"></result>
+        <result property="csid" column="csid"></result>
+        <result property="storeId" column="storeId"></result>
+        <association property="store" javaType="Store">
+            <id property="storeId" column="storeId"></id>
+            <result property="storeName" column="storeName"></result>
+            <result property="storeDate" column="storeDate"></result>
+            <result property="storeDesc" column="storeDesc"></result>
+            <result property="storeImg" column="storeImg"></result>
+            <result property="storeName" column="storeName"></result>
+        </association>
+        <association property="ps" javaType="ProductsState">
+            <id property="pid" column="pid"></id>
+            <result property="count" column="count"></result>
+            <result property="salesVolume" column="salesVolume"></result>
+        </association>
+    </resultMap>
+
+
+    <select id="findProductsBySid" parameterType="com.aishang.util.PageBeanForProduct" resultMap="productsBySid">
+        select *
+        from product
+            inner join store
+                on product.storeId = store.storeId
+            inner join productstate
+                on product.pid = productstate.pid
+        where product.storeId = #{shortId}
+        limit #{startLimit}, #{pageSize}
+    </select>
+
+    <!-- 查询商铺下推荐商品 -->
+    <resultMap id="hotProductBySid" type="ProductWapper">
+        <id property="pid" column="pid"></id>
+        <result property="pname" column="pname"></result>
+        <result property="market_price" column="market_price"></result>
+        <result property="shop_price" column="shop_price"></result>
+        <result property="image" column="image"></result>
+        <result property="pdesc" column="pdesc"></result>
+        <result property="is_hot" column="is_hot"></result>
+        <result property="pdate" column="pdate"></result>
+        <result property="csid" column="csid"></result>
+        <result property="storeId" column="storeId"></result>
+        <association property="ps" javaType="ProductsState">
+            <id property="pid" column="pid"></id>
+            <result property="count" column="count"></result>
+            <result property="salesVolume" column="salesVolume"></result>
+        </association>
+    </resultMap>
+    <select id="findNewProductBySid" parameterType="int" resultMap="hotProductBySid">
+        select *
+        from product
+            inner join productstate
+                on product.pid = productstate.pid
+        where product.storeId = #{shortId}
+        order by product.pdate desc
+        limit 3
+    </select>
+
+    <!-- 查看是否已经收藏该店铺 -->
+    <select id="checkProductIsExist" parameterType="Collectstore" resultType="Collectstore">
+        select *
+        from collectstore
+        where uid=#{uid} and storeId=#{storeId}
+    </select>
+
+    <!-- 收藏店铺 -->
+    <insert id="collectStore" parameterType="Collectstore">
+        insert into collectstore
+        values(#{uid},#{storeId});
+    </insert>
+
+    <!-- 取消收藏 -->
+    <delete id="cancelCollection" parameterType="Collectstore">
+        delete from collectstore where uid=#{uid} and storeId=#{storeId}
+    </delete>
 
 </mapper>

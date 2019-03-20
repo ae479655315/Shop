@@ -11,7 +11,7 @@
        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!-- 扫描service包下所有使用注解的类型 -->
-    <context:component-scan base-package="com.aishang.service"/>
+    <context:component-scan base-package="com.aishang"/>
 
     <!-- 配置数据库相关参数properties的属性：${url} -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -41,10 +41,10 @@
 
     <!-- 配置扫描Dao接口包，动态实现Dao接口，注入到spring容器中 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <!-- 注入sqlSessionFactory -->
-    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    <!-- 给出需要扫描Dao接口包 -->
-    <property name="basePackage" value="com.aishang.dao"/>
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="com.aishang.dao"/>
     </bean>
 
     <!-- 配置事务管理器 -->
@@ -54,6 +54,45 @@
     </bean>
 
     <!-- 配置基于注解的声明式事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+    <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+
+        <property name="config">
+
+            <bean class="com.google.code.kaptcha.util.Config">
+
+                <constructor-arg>
+
+                    <props>
+
+                        <prop key="kaptcha.border">yes</prop>
+
+                        <prop key="kaptcha.border.color">105,179,90</prop>
+
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>
+
+                        <prop key="kaptcha.image.width">125</prop>
+
+                        <prop key="kaptcha.image.height">45</prop>
+
+                        <prop key="kaptcha.textproducer.font.size">40</prop>
+
+                        <prop key="kaptcha.session.key">code</prop>
+
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+
+                        <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>
+
+                    </props>
+
+                </constructor-arg>
+
+            </bean>
+
+        </property>
+
+    </bean>
 
 </beans>

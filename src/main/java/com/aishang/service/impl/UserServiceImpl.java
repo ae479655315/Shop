@@ -7,15 +7,23 @@ import com.aishang.service.IUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service("userService")
 public class UserServiceImpl implements IUserService {
 
     @Resource
     private IUserDao userDao;
 
-    public User selectUser(long userId) {
+    //检验username是否重复
+    @Override
+    public List<User> checkUsername(String username) {
+        return userDao.checkUsername(username);
+    }
+
+    public User selectUser(Integer userId) {
         return this.userDao.selectUser(userId);
     }
 
@@ -27,5 +35,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User findUser(User user) {
         return userDao.findUser(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDao.updateUser(user);
     }
 }

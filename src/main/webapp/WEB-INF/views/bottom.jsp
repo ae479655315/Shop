@@ -11,35 +11,35 @@
     <ul class="footer-info1 w1200">
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-86.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-86.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">号码保障</a></h3>
             <P>所有会员，手机短信验证</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-87.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-87.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">6*12小时客服</a></h3>
             <P>有任何问题随时免费资讯</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-88.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-88.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">专业专攻</a></h3>
             <P>我们只专注于建筑行业的信息服务</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-89.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-89.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">注册有礼</a></h3>
             <P>随时随地注册有大礼包</P>
         </li>
         <li>
             <div class="ft-tu1">
-                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/zl2-90.gif" /></a>
+                <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/zl2-90.gif" /></a>
             </div>
             <h3><a href="JavaScript:;">值得信赖</a></h3>
             <P>专业的产品，专业的团队</P>
@@ -103,9 +103,9 @@
             <a href="#">互联网药品交易服务资格证</a>
         </p>
         <div class="ft-if3-tu1">
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-91.gif" /></a>
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-92.gif" /></a>
-            <a href="#"><img src=" ${pageContext.request.contextPath}/images/zl2-93.gif" /></a>
+            <a href="#"><img src=" ${pageContext.request.contextPath}/images/images/zl2-91.gif" /></a>
+            <a href="#"><img src=" ${pageContext.request.contextPath}/images/images/zl2-92.gif" /></a>
+            <a href="#"><img src=" ${pageContext.request.contextPath}/images/images/zl2-93.gif" /></a>
         </div>
     </div>
 </div>
@@ -113,29 +113,29 @@
 <!--固定右侧-->
 <ul class="youce">
     <li class="li1">
-        <a href=" ${pageContext.request.contextPath}/home/index.do " class="li1-tu1"><img src=" ${pageContext.request.contextPath}/images/zl2-94.png" /></a>
-        <a href=" ${pageContext.request.contextPath}/home/index.do" class="li1-zi1">返回首页</a>
+        <a href=" ${pageContext.request.contextPath}/index.do " class="li1-tu1"><img src=" ${pageContext.request.contextPath}/images/images/zl2-94.png" /></a>
+        <a href=" ${pageContext.request.contextPath}/index.do" class="li1-zi1">返回首页</a>
     </li>
     <li class="li2">
-        <a href="${pageContext.request.contextPath}/product/showCartItem.do"><img src="${pageContext.request.contextPath}/images/zl2-95.png" />购</br>物</br>车</a>
+        <a href="${pageContext.request.contextPath}/product/showCartItem.do"><img src="${pageContext.request.contextPath}/images/images/zl2-95.png" />购</br>物</br>车</a>
     </li>
     <li class="li3">
-        <a href="#" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/zl2-96.png" /></a>
+        <a href="#" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/images/zl2-96.png" /></a>
         <a href="#" class="li1-zi2">我关注的品牌</a>
     </li>
     <li class="li3">
-        <a href="浏览记录.html" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/zl2-97.png" /></a>
+        <a href="浏览记录.html" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/images/zl2-97.png" /></a>
         <a href="浏览记录.html" class="li1-zi2">我看过的</a>
     </li>
     <li class="li4">
-        <a href="JavaScript:;" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/zl2-98.gif" /></a>
+        <a href="JavaScript:;" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/images/zl2-98.gif" /></a>
         <div class="li4-ewm">
-            <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/asjy.png" /></a>
+            <a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/asjy.png" /></a>
             <p>扫一扫</p>
         </div>
     </li>
     <li class="li3 li5">
-        <a href="#top" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/zl2-99.gif" /></a>
+        <a href="#top" class="li1-tu2"><img src=" ${pageContext.request.contextPath}/images/images/zl2-99.gif" /></a>
         <a href="#top" class="li1-zi2">返回顶部</a>
     </li>
 </ul>

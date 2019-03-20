@@ -57,4 +57,16 @@ public class Store {
     public void setSuid(Integer suid) {
         this.suid = suid;
     }
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "storeId=" + storeId +
+                ", storeName='" + storeName + '\'' +
+                ", storeDate=" + storeDate +
+                ", storeDesc='" + storeDesc + '\'' +
+                ", storeImg='" + storeImg + '\'' +
+                ", suid=" + suid +
+                '}';
+    }
 }

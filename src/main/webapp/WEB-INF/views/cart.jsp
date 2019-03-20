@@ -129,7 +129,7 @@
                     <div class="info-mid" id="item${cartItem.product.pid}">
                         <input type="checkbox" value="" name="hobby" class="mid-ipt f-l"></input>
                         <div class="mid-tu f-l">
-                            <a href="#"><img src="${pageContext.request.contextPath}/${cartItem.product.image}"
+                            <a href="#"><img src="${pageContext.request.contextPath}/images/${cartItem.product.image}"
                                              width="80"
                                              height="80"/></a>
                         </div>

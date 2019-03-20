@@ -32,7 +32,7 @@
                 <c:forEach items="${categoryWappers}" var="c" begin="1" end="6" step="1">
                     <div class="kuaijie-info">
                         <dl class="kj-dl1">
-                            <dt><img src=" ${pageContext.request.contextPath}/images/zl2-07.gif" /><a href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?cid=${c.cid}">${c.cname}</a></dt>
+                            <dt><img src=" ${pageContext.request.contextPath}/images/images/zl2-07.gif" /><a href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?cid=${c.cid}">${c.cname}</a></dt>
                             <dd>
                                 <c:forEach items="${c.categorysecondWappers}" var="cs" begin="0" end="2" step="1" varStatus="vs">
                                     <a href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?csid=${cs.csid}">${cs.csname}</a><c:if test="${!vs.last}"><span>|</span></c:if>
@@ -61,7 +61,7 @@
                     <li><a href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?cid=${c.cid}">${c.cname}</a></li>
                 </c:if>
                 <c:if test="${vs.last}">
-                    <li><a href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?cid=${c.cid}">${c.cname}</a><span><img src=" ${pageContext.request.contextPath}/images/zl2-05.gif" /></span></li>
+                    <li><a href="${pageContext.request.contextPath}/product/showProuctsByCaOrPn.do?cid=${c.cid}">${c.cname}</a><span><img src=" ${pageContext.request.contextPath}/images/images/zl2-05.gif" /></span></li>
                 </c:if>
             </c:forEach>
             <div style="clear:both;"></div>
@@ -73,10 +73,10 @@
 <!--banner-->
 <div class="banner">
     <ul class="ban-ul1">
-        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/banner.png"  width="1400" height="430" /></a></li>
-        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/banner2.jpg" width="1400" height="430" /></a></li>
-        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/banner3.jpg" width="1400" height="430" /></a></li>
-        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/banner4.jpg" width="1400" height="430" /></a></li>
+        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/banner.png"  width="1400" height="430" /></a></li>
+        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/banner2.jpg" width="1400" height="430" /></a></li>
+        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/banner3.jpg" width="1400" height="430" /></a></li>
+        <li><a href="JavaScript:;"><img src=" ${pageContext.request.contextPath}/images/images/banner4.jpg" width="1400" height="430" /></a></li>
     </ul>
     <div class="ban-box w1200">
         <ol class="ban-ol1">
@@ -92,7 +92,7 @@
 <!--热门推荐-->
 <div class="zl-tuijian w1200">
     <div class="tuijian-left f-l">
-        <img src=" ${pageContext.request.contextPath}/images/zl2-14.png" />
+        <img src=" ${pageContext.request.contextPath}/images/images/zl2-14.png" />
     </div>
     <ul class="tuijian-right f-l">
         <li>
@@ -165,11 +165,11 @@
     <div class="zl-con">
         <div class="zl-con-left f-l" style="background:#FBEAD0;">
             <div class="zl-tu">
-                <img src=" ${pageContext.request.contextPath}/images/zl2-33.gif" class="zl-img" />
+                <img src=" ${pageContext.request.contextPath}/images/images/zl2-33.gif" class="zl-img" />
             </div>
             <p class="zl-lp" style="color:#FF9901;">
-                瞅哪呢</br>
-                新的，搁这呢
+                新款</br>
+                劲爆来袭
             </p>
             <ul class="zl-lhover" style=" background:#FF9A02;">
                 <c:forEach items="${newProducts}"  var="new_p" >
@@ -183,7 +183,7 @@
                 <c:forEach items="${newProducts}"  var="new_p" >
                 <li>
                     <div class="sy-tu1">
-                        <a href="${pageContext.request.contextPath}/product/showProduct.do?pid=${new_p.pid}" target="_blank"><img src=" ${pageContext.request.contextPath}/${new_p.image}" /></a>
+                        <a href="${pageContext.request.contextPath}/product/showProduct.do?pid=${new_p.pid}" target="_blank"><img src=" ${pageContext.request.contextPath}/images/${new_p.image}" /></a>
                     </div>
                     <div class="sy-tit1">
                         <a href="${pageContext.request.contextPath}/product/showProduct.do?pid=${new_p.pid}" target="_blank">${new_p.pname}</a>
@@ -211,11 +211,11 @@
     <div class="zl-con">
         <div class="zl-con-left f-l" style="background:#F0F6F2;">
             <div class="zl-tu">
-                <img src="${pageContext.request.contextPath}/images/zl2-40.gif" class="zl-img" />
+                <img src="${pageContext.request.contextPath}/images/images/zl2-40.gif" class="zl-img" />
             </div>
             <p class="zl-lp" style="color:#5B7F4F;">
-                别寻么了</br>
-                火的都冒烟了
+                热款</br>
+                限时抢购
             </p>
             <ul class="zl-lhover" style=" background:#5B8050;">
                 <c:forEach items="${hotProducts}" var="hot_p">
@@ -229,7 +229,7 @@
                 <c:forEach items="${hotProducts}" var="hot_p">
                 <li>
                     <div class="sy-tu1">
-                        <a href="${pageContext.request.contextPath}/product/showProduct.do?pid=${hot_p.pid}"  target="_blank"><img src="${pageContext.request.contextPath}/${hot_p.image}" /></a>
+                        <a href="${pageContext.request.contextPath}/product/showProduct.do?pid=${hot_p.pid}"  target="_blank"><img src="${pageContext.request.contextPath}/images/${hot_p.image}" /></a>
                     </div>
                     <div class="sy-tit1">
                         <a href="${pageContext.request.contextPath}/product/showProduct.do?pid=${hot_p.pid}" target="_blank">${hot_p.pname}</a>

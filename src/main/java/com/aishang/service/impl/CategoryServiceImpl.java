@@ -11,8 +11,10 @@ import com.aishang.service.IUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service("categoryService")
 public class CategoryServiceImpl implements ICategoryService {
 
