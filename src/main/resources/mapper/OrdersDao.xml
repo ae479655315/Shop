@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.aishang.dao.IOrdersDao">
+    <!-- 添加订单，并返回订单id  -->
+    <insert id="creatOrder" parameterType="orders">
+
+        <selectKey keyProperty="oid" resultType="int" order="AFTER">
+            select LAST_INSERT_ID();
+        </selectKey>
+
+        insert into orders(total,name,phone,addr,uid,ordertime,storeId)
+        values(#{total},#{name},#{phone},#{addr},#{uid},#{ordertime},#{storeId})
+    </insert>
+
+    <!-- 添加订单项 -->
+    <insert id="creatOrderitem" parameterType="Orderitem">
+        insert into orderitem(count,subtotal,pid,oid)
+                values(#{count},#{subtotal},#{pid},#{oid});
+    </insert>
+
+    <!-- 修改订单状态 -->
+    <update id="changeState" parameterType="Orders">
+        update orders set state = #{state} where oid = #{oid}
+    </update>
+
+    <!-- OrdersWapper -->
+    <!-- 根据订单id查询订单 -->
+    <resultMap id="orderByOid" type="OrdersWapper">
+       <id property="oid" column="oid" />
+       <result property="total" column="total"/>
+       <result property="ordertime" column="ordertime"/>
+       <result property="state" column="state"/>
+       <result property="name" column="name"/>
+       <result property="phone" column="phone"/>
+       <result property="addr" column="addr"/>
+       <result property="uid" column="uid"/>
+       <collection property="orderites" ofType="OrderitemWapper">
+            <id property="itemid" column="itemid"/>
+            <result property="count" column="count"/>
+            <result property="subtotal" column="subtotal"/>
+            <association property="product" javaType="ProductWapper">
+                <id property="pid" column="pid"/>
+                <result property="pname" column="pname"/>
+                <result property="market_price" column="market_price"/>
+                <result property="shop_price" column="shop_price"/>
+                <result property="image" column="image"/>
+                <result property="pdesc" column="pdesc"/>
+                <result property="is_hot" column="is_hot"/>
+                <result property="csid" column="csid"/>
+                <result property="storeId" column="storeId"/>
+                <association property="ps" javaType="ProductsState">
+                    <id property="pid" column="pid"/>
+                    <result property="count" column="count"/>
+                    <result property="salesVolume" column="salesVolume"/>
+                    <result property="state" column="state"/>
+                </association>
+            </association>
+       </collection>
+
+
+    </resultMap>
+    <select id="findOrderByOid" parameterType="int" resultMap="orderByOid">
+        select *
+        from orders INNER JOIN orderitem
+                on orders.oid = orderitem.oid
+            INNER JOIN product
+                on orderitem.pid = product.pid
+        where orders.oid = #{oid}
+        order by orders.oid desc
+    </select>
+
+
+    <!--  查询订单列表 -->
+    <select id="findOrdersByUid" parameterType="int" resultMap="orderByOid">
+        select *
+        from orders INNER JOIN orderitem
+                on orders.oid = orderitem.oid
+            INNER JOIN product
+                on orderitem.pid = product.pid
+        where uid = #{uid}
+        order by orders.oid desc
+    </select>
+</mapper>
