@@ -23,6 +23,7 @@ public class IndexController {
     @RequestMapping("index")
     public String index2(Model model) {
         //查询一类类目扩展类集合
+        //测试
         List<CategoryWapper> categoryWappers = categoryService.findAllCategoryWappers();
         //查询8个热门商品
         List<Product> hotProducts = productService.findHotProducts();
