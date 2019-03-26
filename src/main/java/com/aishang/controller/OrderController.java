@@ -72,7 +72,7 @@ public class OrderController {
             cartItem.setProduct(pro);
             cartItem.setCount(count);
             Cart cart = new Cart();
-            cart.addCartItem(cartItem, pro.getStoreId());
+            cart.addCartItem(cartItem);
             model.addAttribute("cart",cart);
 
             List<Store> allStores = storeService.findAllStores();
@@ -105,7 +105,7 @@ public class OrderController {
             Product pro = productService.findProductByPid(pid);
             cartItem.setProduct(pro);
             cartItem.setCount(count);
-            cart.addCartItem(cartItem, pro.getStoreId());
+            cart.addCartItem(cartItem);
         }
         //记录多个oid
         List<Integer> oids = ordersService.creatOrdersAndItems(cart,formOrder,user.getUid());

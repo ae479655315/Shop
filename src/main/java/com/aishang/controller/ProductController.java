@@ -175,12 +175,12 @@ public class ProductController {
         if (session.getAttribute("cart") == null) {
             //第一次加入购物车
             cart = new Cart();
-            cart.addCartItem(cartItem, pro.getStoreId());
+            cart.addCartItem(cartItem);
             session.setAttribute("cart", cart);
         } else {
             //已经加入过购物车了
             cart = (Cart) session.getAttribute("cart");
-            cart.addCartItem(cartItem, pro.getStoreId());
+            cart.addCartItem(cartItem);
         }
         //响应客户端
         PrintWriter out = response.getWriter();

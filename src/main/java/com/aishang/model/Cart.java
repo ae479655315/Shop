@@ -12,13 +12,6 @@ public class Cart {
 
     //获取总价
     public double getTotal() {
-    /*    total = 0 ;
-        for (Integer key : cartItemMap.keySet()) {
-            List<CartItem> cartItems = cartItemMap.get(key);
-            for (CartItem cartItem : cartItems) {
-                total = total + cartItem.getSubTotal();
-            }
-        }*/
         return total;
     }
 
@@ -50,11 +43,11 @@ public class Cart {
 
 
     //加入购物车
-    public void addCartItem(CartItem cartItem, Integer storeId) {
+    public void addCartItem(CartItem cartItem) {
         List<CartItem> cartItems = null;
-        if (cartItemMap.containsKey(storeId)) {
+        if (cartItemMap.containsKey(cartItem.getProduct().getStoreId())) {
             //购物车中已存有该店铺的商品
-            cartItems = cartItemMap.get(storeId);
+            cartItems = cartItemMap.get(cartItem.getProduct().getStoreId());
             boolean flag = false; //标记商品是否为新加入购物车的
             int i = 0; //若已经加入过，记录此时商品的索引
             for (i = 0; i < cartItems.size(); i++) {
@@ -84,6 +77,6 @@ public class Cart {
         total = total + cartItem.getSubTotal();
         System.out.println("Cart.java中total:"+total);
         //重新加入集合中
-        cartItemMap.put(storeId, cartItems);
+        cartItemMap.put(cartItem.getProduct().getStoreId(), cartItems);
     }
 }
